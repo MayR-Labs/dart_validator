@@ -50,59 +50,156 @@ dependencies:
 
 ## 🧩 Quick Start
 
-### 🧠 Basic Usage
+### 🧠 Basic Usage in Dart
 
 ```dart
-import 'package:mayr_validations/mayr_validations.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
-TextFormField(
-  decoration: InputDecoration(labelText: 'Username'),
-  validator: (value) => MayrValidator(value)
+void main() {
+  // Basic validation
+  final error = MayrValidator('test@example.com')
       .required()
-      .min(2)
-      .max(256)
-      .run(),
-);
+      .email()
+      .run();
+  
+  print(error); // null if valid, error message if invalid
+}
 ```
 
-Or more succinctly using the extension method:
+### 📱 Flutter TextFormField Integration
 
 ```dart
+import 'package:flutter/material.dart';
+import 'package:mayr_validator/mayr_validator.dart';
+
 TextFormField(
+  decoration: InputDecoration(labelText: 'Email'),
   validator: (value) => value.mayrValidator()
       .required()
-      .min(2)
-      .max(256)
+      .email()
+      .max(100)
       .run(),
-);
+)
+```
+
+### 💡 More Flutter Examples
+
+#### Registration Form
+
+```dart
+class RegistrationForm extends StatefulWidget {
+  @override
+  _RegistrationFormState createState() => _RegistrationFormState();
+}
+
+class _RegistrationFormState extends State<RegistrationForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Configure global validation messages
+    MayrValidationCore().setup({
+      'messages': {
+        'required': 'This field is required',
+        'min': 'Must be at least {min} characters',
+        'email': 'Please enter a valid email address',
+      },
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          // Email field
+          TextFormField(
+            decoration: InputDecoration(labelText: 'Email'),
+            validator: (value) => value.mayrValidator()
+                .required()
+                .email()
+                .run(),
+          ),
+          
+          // Password field
+          TextFormField(
+            controller: _passwordController,
+            decoration: InputDecoration(labelText: 'Password'),
+            obscureText: true,
+            validator: (value) => value.mayrValidator()
+                .required()
+                .min(8)
+                .regex(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])')
+                .run(),
+          ),
+          
+          // Confirm password field
+          TextFormField(
+            decoration: InputDecoration(labelText: 'Confirm Password'),
+            obscureText: true,
+            validator: (value) => value.mayrValidator()
+                .required()
+                .same(_passwordController.text, 'Passwords must match')
+                .run(),
+          ),
+          
+          // Submit button
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // Form is valid
+                print('Form submitted!');
+              }
+            },
+            child: Text('Register'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 ```
 
 ---
 
 ## ⚙️ Global Configuration
 
-You can configure MayrValidations globally using the `MayrValidationEngine.setup` method.
+Configure MayrValidations globally to set default messages and parameters.
 
 ```dart
-MayrValidationEngine.setup(
-  messages: {
-    'required': 'This field is required.',
-    'min': 'Must be at least :min characters.',
-    'max': 'Must not exceed :max characters.',
-  },
-  defaults: {
-    'min': 3,
-    'max': 255,
-  },
-);
+void main() {
+  // Setup global configuration
+  MayrValidationCore().setup({
+    'messages': {
+      'required': 'This field is required',
+      'min': 'Must be at least {min} characters',
+      'max': 'Must not exceed {max} characters',
+      'email': 'Please enter a valid email address',
+    },
+    'defaults': {
+      'min': 3,
+      'max': 255,
+    },
+  });
+  
+  runApp(MyApp());
+}
 ```
 
-### Structure
+### Message Placeholders
 
-| Field      | Description                                                     |
-| ---------- | --------------------------------------------------------------- |
-| `messages` | Global message templates (e.g. `:min` and `:max` placeholders). |
-| `defaults` | Default parameters for validations like `min()` or `max()`.     |
+Use placeholders in your messages that will be replaced with actual values:
+
+| Placeholder | Description                    | Example                            |
+| ----------- | ------------------------------ | ---------------------------------- |
+| `{min}`     | Minimum value/length           | "Must be at least {min} characters"|
+| `{max}`     | Maximum value/length           | "Must not exceed {max} characters" |
+| `{value}`   | Comparison value               | "Must be greater than {value}"     |
+| `{size}`    | Expected size                  | "Must be exactly {size} characters"|
 
 ---
 
@@ -121,58 +218,99 @@ If no `debounce` is passed, it defaults to `Duration.zero`.
 
 ## 🧱 Custom Validations
 
-You can register custom rules globally using `register`.
+Register custom validation rules to extend the validation system with your own logic.
 
 ```dart
-MayrValidationEngine.register('userId', (value, params) {
-  if (value == null || !value.startsWith('USR_')) {
-    return 'Invalid user ID format.';
-  }
-  return null; // null means valid
-});
+void main() {
+  // Register a custom rule
+  MayrValidationCore().registerRule('userId', (value, params) {
+    if (value == null || value.isEmpty) {
+      return 'User ID is required';
+    }
+    if (!value.startsWith('USR_')) {
+      return 'User ID must start with USR_';
+    }
+    if (!RegExp(r'^USR_[A-Z0-9]+$').hasMatch(value)) {
+      return 'Invalid user ID format';
+    }
+    return null; // null means valid
+  });
+}
 ```
 
-Then use it like:
+Then use it in your validators:
 
 ```dart
-MayrValidator(value)
-    .required()
-    .custom('userId')
-    .run();
+// In a TextFormField
+TextFormField(
+  decoration: InputDecoration(labelText: 'User ID'),
+  validator: (value) => value.mayrValidator()
+      .required()
+      .custom('userId')
+      .run(),
+)
 ```
 
-If you call a custom validator that hasn’t been registered:
+### Environment-Aware Behavior
 
-* In **development**, it throws an error.
-* In **production**, it is silently ignored.
+Custom rules behave differently based on the environment:
+
+* **Development Mode**: Throws an exception if a custom rule is not registered
+* **Production Mode**: Silently ignores unregistered custom rules
 
 ---
 
 ## 🧩 Validator Groups
 
-You can register reusable groups for repeated logic:
+Validator groups allow you to register reusable validation patterns for repeated logic.
 
 ```dart
-MayrValidationEngine.registerGroup('strongPassword', (validator, params) {
-  return validator
-      .required()
-      .min(8)
-      .regex(r'(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])');
-});
+void main() {
+  // Register a group for username validation
+  MayrValidationCore().registerGroup('username', (validator, params) {
+    return validator
+        .required()
+        .min(3)
+        .max(20)
+        .alphaDash();
+  });
+  
+  // Register a group for strong password validation
+  MayrValidationCore().registerGroup('strongPassword', (validator, params) {
+    return validator
+        .required()
+        .min(8)
+        .regex(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])');
+  });
+}
 ```
 
-Use the group anywhere:
+Use the group in your validators:
 
 ```dart
-MayrValidator(value)
-    .group('strongPassword')
-    .run();
+// In a TextFormField
+TextFormField(
+  decoration: InputDecoration(labelText: 'Username'),
+  validator: (value) => value.mayrValidator()
+      .group('username')
+      .run(),
+)
+
+TextFormField(
+  decoration: InputDecoration(labelText: 'Password'),
+  obscureText: true,
+  validator: (value) => value.mayrValidator()
+      .group('strongPassword')
+      .run(),
+)
 ```
 
-If an unknown group is called:
+### Benefits of Groups
 
-* Throws in **development**.
-* Ignored in **production**.
+* ✅ **Reusable**: Define once, use everywhere
+* ✅ **Maintainable**: Update validation logic in one place
+* ✅ **Consistent**: Ensure same validation rules across your app
+* ✅ **Clean Code**: Keep your validators concise and readable
 
 ---
 
@@ -316,11 +454,20 @@ Each rule can be chained fluently and combined with custom logic to fit your nee
 
 ---
 
-## 🧠 Design Overview
+## �� Design Overview
 
-* **`MayrValidationEngine`** → Singleton core managing setup, messages, defaults, and registrations.
-* **`MayrValidator`** → Instance-level builder handling chained validation logic for a single value.
-* **Extension `mayrValidator()`** → Enables the elegant `value.mayrValidator()` syntax.
+MayrValidations follows a clean architecture with separation of concerns:
+
+* **`MayrValidationCore`** → Singleton core managing global setup, messages, defaults, custom rules, and validation groups
+* **`MayrValidator`** → Instance-level builder handling chained validation logic for a single value
+* **Extension `mayrValidator()`** → Enables the elegant `value.mayrValidator()` syntax
+
+### Architecture Flow
+
+1. **Setup** → Configure global messages and defaults via `MayrValidationCore().setup()`
+2. **Register** → Register custom rules and groups via `registerRule()` and `registerGroup()`
+3. **Validate** → Chain validation rules and call `.run()` to execute
+4. **Result** → Returns `null` if valid, or an error message string if invalid
 
 ---
 
