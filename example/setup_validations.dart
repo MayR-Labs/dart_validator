@@ -13,14 +13,14 @@ void setupValidations() {
       'max': 'Must not exceed {max} characters',
       'email': 'Please enter a valid email address',
     },
-    'defaults': {
-      'min': 3,
-      'max': 255,
-    },
+    'defaults': {'min': 3, 'max': 255},
   });
 
   // Register custom validation rule for user IDs
-  MayrValidationCore().registerRule('userId', (String? value, Map<String, dynamic>? params) {
+  MayrValidationCore().registerRule('userId', (
+    String? value,
+    Map<String, dynamic>? params,
+  ) {
     if (value == null || value.isEmpty) return 'User ID is required';
     if (!value.startsWith('USR_')) return 'User ID must start with USR_';
     if (!RegExp(r'^USR_[A-Z0-9]+$').hasMatch(value)) {

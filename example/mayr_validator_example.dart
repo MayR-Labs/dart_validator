@@ -63,7 +63,7 @@ void basicValidation() {
 void globalConfiguration() {
   // The global configuration is already set up in main() via setupValidations()
   // This example shows how the configured messages are used
-  
+
   final error = MayrValidator('').required().run();
   print('Custom message: $error');
 
@@ -75,7 +75,7 @@ void globalConfiguration() {
 void customRules() {
   // Custom rules are already registered in main() via setupValidations()
   // This example shows how to use the registered custom rule
-  
+
   final error1 = MayrValidator('USR_12345').custom('userId').run();
   print('Valid user ID: ${error1 ?? "Valid"}');
 
@@ -87,7 +87,7 @@ void customRules() {
 void validationGroups() {
   // Validation groups are already registered in main() via setupValidations()
   // This example shows how to use the registered validation groups
-  
+
   final error1 = MayrValidator('john_doe').group('username').run();
   print('Valid username: ${error1 ?? "Valid"}');
 
@@ -104,53 +104,36 @@ void validationGroups() {
 /// Example 5: Chaining validators
 void chainingValidators() {
   // Chain multiple validators
-  final error1 = MayrValidator('test@example.com')
-      .required()
-      .email()
-      .min(5)
-      .max(50)
-      .run();
+  final error1 = MayrValidator(
+    'test@example.com',
+  ).required().email().min(5).max(50).run();
   print('Valid email with length: ${error1 ?? "Valid"}');
 
-  final error2 = MayrValidator('john123')
-      .required()
-      .alphaNum()
-      .min(3)
-      .max(20)
-      .run();
+  final error2 = MayrValidator(
+    'john123',
+  ).required().alphaNum().min(3).max(20).run();
   print('Valid username: ${error2 ?? "Valid"}');
 
   // Number validation
-  final error3 = MayrValidator(25)
-      .required()
-      .numeric()
-      .between(18, 100)
-      .run();
+  final error3 = MayrValidator(25).required().numeric().between(18, 100).run();
   print('Valid age: ${error3 ?? "Valid"}');
 
   // Array validation
-  final error4 = MayrValidator(['apple', 'banana', 'cherry'])
-      .required()
-      .array()
-      .min(2)
-      .distinct()
-      .run();
+  final error4 = MayrValidator([
+    'apple',
+    'banana',
+    'cherry',
+  ]).required().array().min(2).distinct().run();
   print('Valid array: ${error4 ?? "Valid"}');
 }
 
 /// Example 6: Using extension method
 void extensionMethod() {
   // Use the mayrValidator() extension on String
-  final error1 = 'test@example.com'.mayrValidator()
-      .required()
-      .email()
-      .run();
+  final error1 = 'test@example.com'.mayrValidator().required().email().run();
   print('Valid email: ${error1 ?? "Valid"}');
 
-  final error2 = 'ab'.mayrValidator()
-      .required()
-      .min(3)
-      .run();
+  final error2 = 'ab'.mayrValidator().required().min(3).run();
   print('Too short: $error2');
 
   // Works with null strings
@@ -160,23 +143,23 @@ void extensionMethod() {
 }
 
 /// Example for Flutter usage (commented out as it requires Flutter SDK)
-/// 
+///
 /// ```dart
 /// import 'package:flutter/material.dart';
 /// import 'package:mayr_validator/mayr_validator.dart';
-/// 
+///
 /// class MyForm extends StatefulWidget {
 ///   @override
 ///   _MyFormState createState() => _MyFormState();
 /// }
-/// 
+///
 /// class _MyFormState extends State<MyForm> {
 ///   final _formKey = GlobalKey<FormState>();
-/// 
+///
 ///   @override
 ///   void initState() {
 ///     super.initState();
-///     
+///
 ///     // Setup global validation messages
 ///     MayrValidationCore().setup({
 ///       'messages': {
@@ -186,7 +169,7 @@ void extensionMethod() {
 ///       },
 ///     });
 ///   }
-/// 
+///
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Form(
@@ -201,7 +184,7 @@ void extensionMethod() {
 ///                 .email()
 ///                 .run(),
 ///           ),
-///           
+///
 ///           // Username field
 ///           TextFormField(
 ///             decoration: InputDecoration(labelText: 'Username'),
@@ -212,7 +195,7 @@ void extensionMethod() {
 ///                 .alphaDash()
 ///                 .run(),
 ///           ),
-///           
+///
 ///           // Password field
 ///           TextFormField(
 ///             decoration: InputDecoration(labelText: 'Password'),
@@ -223,7 +206,7 @@ void extensionMethod() {
 ///                 .regex(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])')
 ///                 .run(),
 ///           ),
-///           
+///
 ///           // Submit button
 ///           ElevatedButton(
 ///             onPressed: () {

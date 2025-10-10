@@ -3,10 +3,10 @@ import 'package:mayr_validator/mayr_validator.dart';
 import 'setup_validations.dart';
 
 /// Flutter Example for MayrValidator
-/// 
+///
 /// This example demonstrates how to use MayrValidator in a Flutter application
 /// with TextFormField widgets.
-/// 
+///
 /// To run this example:
 /// 1. Create a new Flutter project
 /// 2. Add mayr_validator to pubspec.yaml
@@ -16,7 +16,7 @@ import 'setup_validations.dart';
 void main() {
   // Setup global validation configuration before running the app
   setupValidations();
-  
+
   runApp(MyApp());
 }
 
@@ -75,7 +75,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
           backgroundColor: Colors.green,
         ),
       );
-      
+
       // Print form data
       print('Email: ${_emailController.text}');
       print('Username: ${_usernameController.text}');
@@ -93,10 +93,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('MayrValidator Demo'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('MayrValidator Demo'), centerTitle: true),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -110,7 +107,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 24),
-              
+
               // Email Field
               TextFormField(
                 controller: _emailController,
@@ -120,28 +117,25 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   prefixIcon: Icon(Icons.email),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) => value.mayrValidator()
-                    .required()
-                    .email()
-                    .max(100)
-                    .run(),
+                validator: (value) =>
+                    value.mayrValidator().required().email().max(100).run(),
               ),
               SizedBox(height: 16),
-              
+
               // Username Field
               TextFormField(
                 controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username *',
-                  hintText: 'Enter username (3-20 chars, letters, numbers, -, _)',
+                  hintText:
+                      'Enter username (3-20 chars, letters, numbers, -, _)',
                   prefixIcon: Icon(Icons.person),
                 ),
-                validator: (value) => value.mayrValidator()
-                    .group('username')
-                    .run(),
+                validator: (value) =>
+                    value.mayrValidator().group('username').run(),
               ),
               SizedBox(height: 16),
-              
+
               // Password Field
               TextFormField(
                 controller: _passwordController,
@@ -151,12 +145,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   prefixIcon: Icon(Icons.lock),
                 ),
                 obscureText: true,
-                validator: (value) => value.mayrValidator()
-                    .group('strongPassword')
-                    .run(),
+                validator: (value) =>
+                    value.mayrValidator().group('strongPassword').run(),
               ),
               SizedBox(height: 16),
-              
+
               // Confirm Password Field
               TextFormField(
                 controller: _confirmPasswordController,
@@ -166,13 +159,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   prefixIcon: Icon(Icons.lock_outline),
                 ),
                 obscureText: true,
-                validator: (value) => value.mayrValidator()
+                validator: (value) => value
+                    .mayrValidator()
                     .required()
                     .same(_passwordController.text, 'Passwords must match')
                     .run(),
               ),
               SizedBox(height: 16),
-              
+
               // Age Field
               TextFormField(
                 controller: _ageController,
@@ -182,28 +176,26 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   prefixIcon: Icon(Icons.calendar_today),
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) => value.mayrValidator()
+                validator: (value) => value
+                    .mayrValidator()
                     .required()
                     .numeric()
                     .between(18, 120)
                     .run(),
               ),
               SizedBox(height: 24),
-              
+
               // Submit Button
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 16),
-                ),
+                child: Text('Submit', style: TextStyle(fontSize: 16)),
               ),
-              
+
               SizedBox(height: 16),
-              
+
               // Info Card
               Card(
                 color: Colors.blue.shade50,
@@ -220,9 +212,18 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         ),
                       ),
                       SizedBox(height: 8),
-                      _buildInfoRow('Email', 'Valid email format, max 100 chars'),
-                      _buildInfoRow('Username', '3-20 chars, letters, numbers, -, _'),
-                      _buildInfoRow('Password', 'Min 8 chars, uppercase, lowercase, number'),
+                      _buildInfoRow(
+                        'Email',
+                        'Valid email format, max 100 chars',
+                      ),
+                      _buildInfoRow(
+                        'Username',
+                        '3-20 chars, letters, numbers, -, _',
+                      ),
+                      _buildInfoRow(
+                        'Password',
+                        'Min 8 chars, uppercase, lowercase, number',
+                      ),
                       _buildInfoRow('Confirm Password', 'Must match password'),
                       _buildInfoRow('Age', 'Number between 18-120'),
                     ],
@@ -246,12 +247,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             '• $label: ',
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
           ),
-          Expanded(
-            child: Text(
-              description,
-              style: TextStyle(fontSize: 12),
-            ),
-          ),
+          Expanded(child: Text(description, style: TextStyle(fontSize: 12))),
         ],
       ),
     );
@@ -280,9 +276,9 @@ class _LoginFormState extends State<LoginForm> {
   void _login() {
     if (_formKey.currentState!.validate()) {
       print('Login with: ${_emailController.text}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logging in...')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Logging in...')));
     }
   }
 
@@ -304,13 +300,14 @@ class _LoginFormState extends State<LoginForm> {
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
                 ),
-                validator: (value) => value.mayrValidator()
+                validator: (value) => value
+                    .mayrValidator()
                     .required('Email is required')
                     .email('Please enter a valid email')
                     .run(),
               ),
               SizedBox(height: 16),
-              
+
               // Password field
               TextFormField(
                 controller: _passwordController,
@@ -319,12 +316,13 @@ class _LoginFormState extends State<LoginForm> {
                   prefixIcon: Icon(Icons.lock),
                 ),
                 obscureText: true,
-                validator: (value) => value.mayrValidator()
+                validator: (value) => value
+                    .mayrValidator()
                     .required('Password is required')
                     .min(6, 'Password must be at least 6 characters')
                     .run(),
               ),
-              
+
               // Remember me checkbox
               CheckboxListTile(
                 title: Text('Remember me'),
@@ -335,9 +333,9 @@ class _LoginFormState extends State<LoginForm> {
                   });
                 },
               ),
-              
+
               SizedBox(height: 24),
-              
+
               // Login button
               ElevatedButton(
                 onPressed: _login,
@@ -393,27 +391,31 @@ class _DynamicValidationFormState extends State<DynamicValidationForm> {
                 },
               ),
               SizedBox(height: 16),
-              
+
               // Postal code with conditional validation
               TextFormField(
                 controller: _postalCodeController,
                 decoration: InputDecoration(
-                  labelText: _requiresPostalCode 
-                      ? 'Postal Code *' 
+                  labelText: _requiresPostalCode
+                      ? 'Postal Code *'
                       : 'Postal Code (Optional)',
                 ),
-                validator: (value) => value.mayrValidator()
-                    .requiredIf(_requiresPostalCode, 'Postal code is required for this country')
+                validator: (value) => value
+                    .mayrValidator()
+                    .requiredIf(
+                      _requiresPostalCode,
+                      'Postal code is required for this country',
+                    )
                     .run(),
               ),
-              
+
               SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form is valid!')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Form is valid!')));
                   }
                 },
                 child: Text('Submit'),

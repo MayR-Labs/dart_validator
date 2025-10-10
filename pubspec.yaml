@@ -1,5 +1,5 @@
 name: mayr_validator
-description: A powerful yet elegant validation library for Dart and Flutter, inspired by Laravel’s validator syntax and philosophy.
+description: A powerful yet elegant validation library for Dart and Flutter, inspired by Laravel's validator syntax and philosophy.
 version: 1.0.0
 homepage: https://github.com/YoungMayor/mayr_dart_validator
 repository: https://github.com/YoungMayor/mayr_dart_validator

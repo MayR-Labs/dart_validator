@@ -15,19 +15,12 @@ void setupValidations() {
       'numeric': 'Must be a number',
       'between': 'Must be between {min} and {max}',
     },
-    'defaults': {
-      'min': 3,
-      'max': 255,
-    },
+    'defaults': {'min': 3, 'max': 255},
   });
 
   // Register custom validation groups
   MayrValidationCore().registerGroup('username', (validator, params) {
-    return validator
-        .required()
-        .min(3)
-        .max(20)
-        .alphaDash();
+    return validator.required().min(3).max(20).alphaDash();
   });
 
   MayrValidationCore().registerGroup('strongPassword', (validator, params) {

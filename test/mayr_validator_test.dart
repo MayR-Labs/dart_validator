@@ -114,10 +114,13 @@ void main() {
       expect(error, isNotNull);
     });
 
-    test('alphaDash - should validate letters, numbers, dashes, underscores', () {
-      final error = MayrValidator('abc_123-def').alphaDash().run();
-      expect(error, isNull);
-    });
+    test(
+      'alphaDash - should validate letters, numbers, dashes, underscores',
+      () {
+        final error = MayrValidator('abc_123-def').alphaDash().run();
+        expect(error, isNull);
+      },
+    );
 
     test('lowercase - should validate lowercase string', () {
       final error = MayrValidator('abc').lowercase().run();
@@ -160,7 +163,9 @@ void main() {
     });
 
     test('uuid - should validate correct UUID', () {
-      final error = MayrValidator('550e8400-e29b-41d4-a716-446655440000').uuid().run();
+      final error = MayrValidator(
+        '550e8400-e29b-41d4-a716-446655440000',
+      ).uuid().run();
       expect(error, isNull);
     });
 
@@ -337,21 +342,14 @@ void main() {
 
   group('Chaining Validators', () {
     test('should chain multiple validators', () {
-      final error = MayrValidator('test@example.com')
-          .required()
-          .email()
-          .min(5)
-          .max(50)
-          .run();
+      final error = MayrValidator(
+        'test@example.com',
+      ).required().email().min(5).max(50).run();
       expect(error, isNull);
     });
 
     test('should return first error in chain', () {
-      final error = MayrValidator('ab')
-          .required()
-          .min(3)
-          .max(10)
-          .run();
+      final error = MayrValidator('ab').required().min(3).max(10).run();
       expect(error, isNotNull);
       expect(error, contains('min'));
     });
@@ -359,10 +357,7 @@ void main() {
 
   group('Extension Method', () {
     test('should work with string extension', () {
-      final error = 'test@example.com'.mayrValidator()
-          .required()
-          .email()
-          .run();
+      final error = 'test@example.com'.mayrValidator().required().email().run();
       expect(error, isNull);
     });
 
@@ -384,7 +379,7 @@ void main() {
       core.setup({
         'messages': {'required': 'Config error message'},
       });
-      
+
       final error = MayrValidator('').required().run();
       expect(error, equals('Config error message'));
     });
@@ -394,7 +389,7 @@ void main() {
       core.setup({
         'messages': {'min': 'Must be at least {min} characters'},
       });
-      
+
       final error = MayrValidator('ab').min(5).run();
       expect(error, contains('5'));
     });
@@ -448,13 +443,25 @@ void main() {
     });
 
     test('inList - should validate value in list', () {
-      expect(MayrValidator('red').inList(['red', 'green', 'blue']).run(), isNull);
-      expect(MayrValidator('yellow').inList(['red', 'green', 'blue']).run(), isNotNull);
+      expect(
+        MayrValidator('red').inList(['red', 'green', 'blue']).run(),
+        isNull,
+      );
+      expect(
+        MayrValidator('yellow').inList(['red', 'green', 'blue']).run(),
+        isNotNull,
+      );
     });
 
     test('notIn - should validate value not in list', () {
-      expect(MayrValidator('yellow').notIn(['red', 'green', 'blue']).run(), isNull);
-      expect(MayrValidator('red').notIn(['red', 'green', 'blue']).run(), isNotNull);
+      expect(
+        MayrValidator('yellow').notIn(['red', 'green', 'blue']).run(),
+        isNull,
+      );
+      expect(
+        MayrValidator('red').notIn(['red', 'green', 'blue']).run(),
+        isNotNull,
+      );
     });
   });
 }

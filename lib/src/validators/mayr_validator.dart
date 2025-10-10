@@ -42,19 +42,19 @@ class MayrValidator {
     if (debounce > Duration.zero) {
       // Cancel previous timer if exists
       _debounceTimer?.cancel();
-      
+
       // Create a completer for the debounced result
       final completer = Completer<String?>();
-      
+
       _debounceTimer = Timer(debounce, () {
         completer.complete(_executeRules());
       });
-      
+
       // For synchronous validation, return immediately
       // In a real async scenario, this would return a Future
       return _executeRules();
     }
-    
+
     return _executeRules();
   }
 
@@ -70,14 +70,21 @@ class MayrValidator {
   }
 
   /// Helper to format error messages with parameters.
-  String _formatMessage(String? message, String ruleName, Map<String, dynamic> params) {
-    var msg = message ?? _core.getMessage(ruleName) ?? 'Validation failed for $ruleName';
-    
+  String _formatMessage(
+    String? message,
+    String ruleName,
+    Map<String, dynamic> params,
+  ) {
+    var msg =
+        message ??
+        _core.getMessage(ruleName) ??
+        'Validation failed for $ruleName';
+
     // Replace placeholders like {min}, {max}, etc.
     params.forEach((key, value) {
       msg = msg.replaceAll('{$key}', value.toString());
     });
-    
+
     return msg;
   }
 
@@ -89,16 +96,24 @@ class MayrValidator {
   MayrValidator required([String? message]) {
     _rules.add(() {
       if (value == null) {
-        return message ?? _core.getMessage('required') ?? 'This field is required';
+        return message ??
+            _core.getMessage('required') ??
+            'This field is required';
       }
       if (value is String && value.trim().isEmpty) {
-        return message ?? _core.getMessage('required') ?? 'This field is required';
+        return message ??
+            _core.getMessage('required') ??
+            'This field is required';
       }
       if (value is List && value.isEmpty) {
-        return message ?? _core.getMessage('required') ?? 'This field is required';
+        return message ??
+            _core.getMessage('required') ??
+            'This field is required';
       }
       if (value is Map && value.isEmpty) {
-        return message ?? _core.getMessage('required') ?? 'This field is required';
+        return message ??
+            _core.getMessage('required') ??
+            'This field is required';
       }
       return null;
     });
@@ -137,7 +152,9 @@ class MayrValidator {
     _rules.add(() {
       if (value == null) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('string') ?? 'Must be a valid string';
+        return message ??
+            _core.getMessage('string') ??
+            'Must be a valid string';
       }
       return null;
     });
@@ -148,7 +165,7 @@ class MayrValidator {
   MayrValidator min(int minLength, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       int length = 0;
       if (value is String) {
         length = value.length;
@@ -157,7 +174,7 @@ class MayrValidator {
       } else if (value is num) {
         length = value.toInt();
       }
-      
+
       if (length < minLength) {
         return _formatMessage(message, 'min', {'min': minLength});
       }
@@ -170,7 +187,7 @@ class MayrValidator {
   MayrValidator max(int maxLength, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       int length = 0;
       if (value is String) {
         length = value.length;
@@ -179,7 +196,7 @@ class MayrValidator {
       } else if (value is num) {
         length = value.toInt();
       }
-      
+
       if (length > maxLength) {
         return _formatMessage(message, 'max', {'max': maxLength});
       }
@@ -192,7 +209,7 @@ class MayrValidator {
   MayrValidator size(int length, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       int actualLength = 0;
       if (value is String) {
         actualLength = value.length;
@@ -201,7 +218,7 @@ class MayrValidator {
       } else if (value is num) {
         actualLength = value.toInt();
       }
-      
+
       if (actualLength != length) {
         return _formatMessage(message, 'size', {'size': length});
       }
@@ -215,15 +232,19 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('email') ?? 'Must be a valid email address';
+        return message ??
+            _core.getMessage('email') ??
+            'Must be a valid email address';
       }
-      
+
       final emailRegex = RegExp(
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
       );
-      
+
       if (!emailRegex.hasMatch(value)) {
-        return message ?? _core.getMessage('email') ?? 'Must be a valid email address';
+        return message ??
+            _core.getMessage('email') ??
+            'Must be a valid email address';
       }
       return null;
     });
@@ -237,11 +258,11 @@ class MayrValidator {
       if (value is! String) {
         return message ?? _core.getMessage('url') ?? 'Must be a valid URL';
       }
-      
+
       final urlRegex = RegExp(
         r'^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$',
       );
-      
+
       if (!urlRegex.hasMatch(value)) {
         return message ?? _core.getMessage('url') ?? 'Must be a valid URL';
       }
@@ -255,11 +276,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('alpha') ?? 'May contain only alphabetic characters';
+        return message ??
+            _core.getMessage('alpha') ??
+            'May contain only alphabetic characters';
       }
-      
+
       if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
-        return message ?? _core.getMessage('alpha') ?? 'May contain only alphabetic characters';
+        return message ??
+            _core.getMessage('alpha') ??
+            'May contain only alphabetic characters';
       }
       return null;
     });
@@ -271,11 +296,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('alphaNum') ?? 'May contain only alphanumeric characters';
+        return message ??
+            _core.getMessage('alphaNum') ??
+            'May contain only alphanumeric characters';
       }
-      
+
       if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
-        return message ?? _core.getMessage('alphaNum') ?? 'May contain only alphanumeric characters';
+        return message ??
+            _core.getMessage('alphaNum') ??
+            'May contain only alphanumeric characters';
       }
       return null;
     });
@@ -287,11 +316,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('alphaDash') ?? 'May contain letters, numbers, dashes, and underscores';
+        return message ??
+            _core.getMessage('alphaDash') ??
+            'May contain letters, numbers, dashes, and underscores';
       }
-      
+
       if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(value)) {
-        return message ?? _core.getMessage('alphaDash') ?? 'May contain letters, numbers, dashes, and underscores';
+        return message ??
+            _core.getMessage('alphaDash') ??
+            'May contain letters, numbers, dashes, and underscores';
       }
       return null;
     });
@@ -303,11 +336,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('ascii') ?? 'Must contain only ASCII characters';
+        return message ??
+            _core.getMessage('ascii') ??
+            'Must contain only ASCII characters';
       }
-      
+
       if (!RegExp(r'^[\x00-\x7F]+$').hasMatch(value)) {
-        return message ?? _core.getMessage('ascii') ?? 'Must contain only ASCII characters';
+        return message ??
+            _core.getMessage('ascii') ??
+            'Must contain only ASCII characters';
       }
       return null;
     });
@@ -319,11 +356,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('lowercase') ?? 'Must be entirely lowercase';
+        return message ??
+            _core.getMessage('lowercase') ??
+            'Must be entirely lowercase';
       }
-      
+
       if (value != value.toLowerCase()) {
-        return message ?? _core.getMessage('lowercase') ?? 'Must be entirely lowercase';
+        return message ??
+            _core.getMessage('lowercase') ??
+            'Must be entirely lowercase';
       }
       return null;
     });
@@ -335,11 +376,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('uppercase') ?? 'Must be entirely uppercase';
+        return message ??
+            _core.getMessage('uppercase') ??
+            'Must be entirely uppercase';
       }
-      
+
       if (value != value.toUpperCase()) {
-        return message ?? _core.getMessage('uppercase') ?? 'Must be entirely uppercase';
+        return message ??
+            _core.getMessage('uppercase') ??
+            'Must be entirely uppercase';
       }
       return null;
     });
@@ -351,11 +396,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('regex') ?? 'Must match the given pattern';
+        return message ??
+            _core.getMessage('regex') ??
+            'Must match the given pattern';
       }
-      
+
       if (!RegExp(pattern).hasMatch(value)) {
-        return message ?? _core.getMessage('regex') ?? 'Must match the given pattern';
+        return message ??
+            _core.getMessage('regex') ??
+            'Must match the given pattern';
       }
       return null;
     });
@@ -367,11 +416,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('notRegex') ?? 'Must not match the given pattern';
+        return message ??
+            _core.getMessage('notRegex') ??
+            'Must not match the given pattern';
       }
-      
+
       if (RegExp(pattern).hasMatch(value)) {
-        return message ?? _core.getMessage('notRegex') ?? 'Must not match the given pattern';
+        return message ??
+            _core.getMessage('notRegex') ??
+            'Must not match the given pattern';
       }
       return null;
     });
@@ -383,9 +436,11 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('startsWith') ?? 'Must start with $substring';
+        return message ??
+            _core.getMessage('startsWith') ??
+            'Must start with $substring';
       }
-      
+
       if (!value.startsWith(substring)) {
         return _formatMessage(message, 'startsWith', {'substring': substring});
       }
@@ -399,9 +454,11 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('endsWith') ?? 'Must end with $substring';
+        return message ??
+            _core.getMessage('endsWith') ??
+            'Must end with $substring';
       }
-      
+
       if (!value.endsWith(substring)) {
         return _formatMessage(message, 'endsWith', {'substring': substring});
       }
@@ -415,11 +472,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('doesntStartWith') ?? 'Must not start with $substring';
+        return message ??
+            _core.getMessage('doesntStartWith') ??
+            'Must not start with $substring';
       }
-      
+
       if (value.startsWith(substring)) {
-        return _formatMessage(message, 'doesntStartWith', {'substring': substring});
+        return _formatMessage(message, 'doesntStartWith', {
+          'substring': substring,
+        });
       }
       return null;
     });
@@ -431,11 +492,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('doesntEndWith') ?? 'Must not end with $substring';
+        return message ??
+            _core.getMessage('doesntEndWith') ??
+            'Must not end with $substring';
       }
-      
+
       if (value.endsWith(substring)) {
-        return _formatMessage(message, 'doesntEndWith', {'substring': substring});
+        return _formatMessage(message, 'doesntEndWith', {
+          'substring': substring,
+        });
       }
       return null;
     });
@@ -446,9 +511,11 @@ class MayrValidator {
   MayrValidator inList(List values, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (!values.contains(value)) {
-        return message ?? _core.getMessage('in') ?? 'Must be one of the provided values';
+        return message ??
+            _core.getMessage('in') ??
+            'Must be one of the provided values';
       }
       return null;
     });
@@ -459,9 +526,11 @@ class MayrValidator {
   MayrValidator notIn(List values, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (values.contains(value)) {
-        return message ?? _core.getMessage('notIn') ?? 'Must not be one of the provided values';
+        return message ??
+            _core.getMessage('notIn') ??
+            'Must not be one of the provided values';
       }
       return null;
     });
@@ -472,9 +541,11 @@ class MayrValidator {
   MayrValidator same(dynamic otherValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value != otherValue) {
-        return message ?? _core.getMessage('same') ?? 'Must match the other value';
+        return message ??
+            _core.getMessage('same') ??
+            'Must match the other value';
       }
       return null;
     });
@@ -485,9 +556,11 @@ class MayrValidator {
   MayrValidator different(dynamic otherValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value == otherValue) {
-        return message ?? _core.getMessage('different') ?? 'Must differ from the other value';
+        return message ??
+            _core.getMessage('different') ??
+            'Must differ from the other value';
       }
       return null;
     });
@@ -501,11 +574,11 @@ class MayrValidator {
       if (value is! String) {
         return message ?? _core.getMessage('uuid') ?? 'Must be a valid UUID';
       }
-      
+
       final uuidRegex = RegExp(
         r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
       );
-      
+
       if (!uuidRegex.hasMatch(value)) {
         return message ?? _core.getMessage('uuid') ?? 'Must be a valid UUID';
       }
@@ -521,9 +594,9 @@ class MayrValidator {
       if (value is! String) {
         return message ?? _core.getMessage('ulid') ?? 'Must be a valid ULID';
       }
-      
+
       final ulidRegex = RegExp(r'^[0-9A-HJKMNP-TV-Z]{26}$');
-      
+
       if (!ulidRegex.hasMatch(value)) {
         return message ?? _core.getMessage('ulid') ?? 'Must be a valid ULID';
       }
@@ -537,21 +610,23 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('ipAddress') ?? 'Must be a valid IP address';
+        return message ??
+            _core.getMessage('ipAddress') ??
+            'Must be a valid IP address';
       }
-      
+
       // IPv4
-      final ipv4Regex = RegExp(
-        r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$',
-      );
-      
+      final ipv4Regex = RegExp(r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$');
+
       // IPv6
       final ipv6Regex = RegExp(
         r'^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$',
       );
-      
+
       if (!ipv4Regex.hasMatch(value) && !ipv6Regex.hasMatch(value)) {
-        return message ?? _core.getMessage('ipAddress') ?? 'Must be a valid IP address';
+        return message ??
+            _core.getMessage('ipAddress') ??
+            'Must be a valid IP address';
       }
       return null;
     });
@@ -563,15 +638,17 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('macAddress') ?? 'Must be a valid MAC address';
+        return message ??
+            _core.getMessage('macAddress') ??
+            'Must be a valid MAC address';
       }
-      
-      final macRegex = RegExp(
-        r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
-      );
-      
+
+      final macRegex = RegExp(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$');
+
       if (!macRegex.hasMatch(value)) {
-        return message ?? _core.getMessage('macAddress') ?? 'Must be a valid MAC address';
+        return message ??
+            _core.getMessage('macAddress') ??
+            'Must be a valid MAC address';
       }
       return null;
     });
@@ -583,13 +660,17 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('hexColor') ?? 'Must be a valid hex color';
+        return message ??
+            _core.getMessage('hexColor') ??
+            'Must be a valid hex color';
       }
-      
+
       final hexColorRegex = RegExp(r'^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$');
-      
+
       if (!hexColorRegex.hasMatch(value)) {
-        return message ?? _core.getMessage('hexColor') ?? 'Must be a valid hex color';
+        return message ??
+            _core.getMessage('hexColor') ??
+            'Must be a valid hex color';
       }
       return null;
     });
@@ -601,13 +682,17 @@ class MayrValidator {
     _rules.add(() {
       if (value == null || (value is String && value.isEmpty)) return null;
       if (value is! String) {
-        return message ?? _core.getMessage('json') ?? 'Must be a valid JSON string';
+        return message ??
+            _core.getMessage('json') ??
+            'Must be a valid JSON string';
       }
-      
+
       try {
         jsonDecode(value);
       } catch (e) {
-        return message ?? _core.getMessage('json') ?? 'Must be a valid JSON string';
+        return message ??
+            _core.getMessage('json') ??
+            'Must be a valid JSON string';
       }
       return null;
     });
@@ -623,7 +708,9 @@ class MayrValidator {
     _rules.add(() {
       if (value == null) return null;
       if (value is! bool) {
-        return message ?? _core.getMessage('boolean') ?? 'Must be a boolean value';
+        return message ??
+            _core.getMessage('boolean') ??
+            'Must be a boolean value';
       }
       return null;
     });
@@ -636,10 +723,10 @@ class MayrValidator {
       if (value == null) {
         return message ?? _core.getMessage('accepted') ?? 'Must be accepted';
       }
-      
+
       final acceptedValues = [true, 'true', 'yes', '1', 1, 'on'];
       final normalizedValue = value is String ? value.toLowerCase() : value;
-      
+
       if (!acceptedValues.contains(normalizedValue)) {
         return message ?? _core.getMessage('accepted') ?? 'Must be accepted';
       }
@@ -654,10 +741,10 @@ class MayrValidator {
       if (value == null) {
         return message ?? _core.getMessage('declined') ?? 'Must be declined';
       }
-      
+
       final declinedValues = [false, 'false', 'no', '0', 0, 'off'];
       final normalizedValue = value is String ? value.toLowerCase() : value;
-      
+
       if (!declinedValues.contains(normalizedValue)) {
         return message ?? _core.getMessage('declined') ?? 'Must be declined';
       }
@@ -674,16 +761,16 @@ class MayrValidator {
   MayrValidator numeric([String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value is num) return null;
-      
+
       if (value is String) {
         if (num.tryParse(value) == null) {
           return message ?? _core.getMessage('numeric') ?? 'Must be numeric';
         }
         return null;
       }
-      
+
       return message ?? _core.getMessage('numeric') ?? 'Must be numeric';
     });
     return this;
@@ -693,23 +780,23 @@ class MayrValidator {
   MayrValidator integer([String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value is int) return null;
-      
+
       if (value is String) {
         if (int.tryParse(value) == null) {
           return message ?? _core.getMessage('integer') ?? 'Must be an integer';
         }
         return null;
       }
-      
+
       if (value is double) {
         if (value % 1 != 0) {
           return message ?? _core.getMessage('integer') ?? 'Must be an integer';
         }
         return null;
       }
-      
+
       return message ?? _core.getMessage('integer') ?? 'Must be an integer';
     });
     return this;
@@ -719,17 +806,21 @@ class MayrValidator {
   MayrValidator decimal([String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value is double) return null;
-      
+
       if (value is String) {
         if (double.tryParse(value) == null) {
-          return message ?? _core.getMessage('decimal') ?? 'Must be a valid decimal number';
+          return message ??
+              _core.getMessage('decimal') ??
+              'Must be a valid decimal number';
         }
         return null;
       }
-      
-      return message ?? _core.getMessage('decimal') ?? 'Must be a valid decimal number';
+
+      return message ??
+          _core.getMessage('decimal') ??
+          'Must be a valid decimal number';
     });
     return this;
   }
@@ -738,7 +829,7 @@ class MayrValidator {
   MayrValidator between(num min, num max, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -751,7 +842,7 @@ class MayrValidator {
       } else if (value is List) {
         numValue = value.length;
       }
-      
+
       if (numValue < min || numValue > max) {
         return _formatMessage(message, 'between', {'min': min, 'max': max});
       }
@@ -764,7 +855,7 @@ class MayrValidator {
   MayrValidator gt(num comparisonValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -775,7 +866,7 @@ class MayrValidator {
         }
         numValue = parsed;
       }
-      
+
       if (numValue <= comparisonValue) {
         return _formatMessage(message, 'gt', {'value': comparisonValue});
       }
@@ -788,7 +879,7 @@ class MayrValidator {
   MayrValidator gte(num comparisonValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -799,7 +890,7 @@ class MayrValidator {
         }
         numValue = parsed;
       }
-      
+
       if (numValue < comparisonValue) {
         return _formatMessage(message, 'gte', {'value': comparisonValue});
       }
@@ -812,7 +903,7 @@ class MayrValidator {
   MayrValidator lt(num comparisonValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -823,7 +914,7 @@ class MayrValidator {
         }
         numValue = parsed;
       }
-      
+
       if (numValue >= comparisonValue) {
         return _formatMessage(message, 'lt', {'value': comparisonValue});
       }
@@ -836,7 +927,7 @@ class MayrValidator {
   MayrValidator lte(num comparisonValue, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -847,7 +938,7 @@ class MayrValidator {
         }
         numValue = parsed;
       }
-      
+
       if (numValue > comparisonValue) {
         return _formatMessage(message, 'lte', {'value': comparisonValue});
       }
@@ -860,9 +951,9 @@ class MayrValidator {
   MayrValidator digits(int count, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       String strValue = value.toString().replaceAll(RegExp(r'[^0-9]'), '');
-      
+
       if (strValue.length != count) {
         return _formatMessage(message, 'digits', {'count': count});
       }
@@ -875,11 +966,14 @@ class MayrValidator {
   MayrValidator digitsBetween(int min, int max, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       String strValue = value.toString().replaceAll(RegExp(r'[^0-9]'), '');
-      
+
       if (strValue.length < min || strValue.length > max) {
-        return _formatMessage(message, 'digitsBetween', {'min': min, 'max': max});
+        return _formatMessage(message, 'digitsBetween', {
+          'min': min,
+          'max': max,
+        });
       }
       return null;
     });
@@ -890,7 +984,7 @@ class MayrValidator {
   MayrValidator multipleOf(num divisor, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       num numValue = 0;
       if (value is num) {
         numValue = value;
@@ -901,7 +995,7 @@ class MayrValidator {
         }
         numValue = parsed;
       }
-      
+
       if (numValue % divisor != 0) {
         return _formatMessage(message, 'multipleOf', {'value': divisor});
       }
@@ -931,11 +1025,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null) return null;
       if (value is! List) {
-        return message ?? _core.getMessage('contains') ?? 'Must contain the specified value';
+        return message ??
+            _core.getMessage('contains') ??
+            'Must contain the specified value';
       }
-      
+
       if (!value.contains(searchValue)) {
-        return message ?? _core.getMessage('contains') ?? 'Must contain the specified value';
+        return message ??
+            _core.getMessage('contains') ??
+            'Must contain the specified value';
       }
       return null;
     });
@@ -947,11 +1045,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null) return null;
       if (value is! List) {
-        return message ?? _core.getMessage('doesntContain') ?? 'Must not contain the specified value';
+        return message ??
+            _core.getMessage('doesntContain') ??
+            'Must not contain the specified value';
       }
-      
+
       if (value.contains(searchValue)) {
-        return message ?? _core.getMessage('doesntContain') ?? 'Must not contain the specified value';
+        return message ??
+            _core.getMessage('doesntContain') ??
+            'Must not contain the specified value';
       }
       return null;
     });
@@ -963,11 +1065,15 @@ class MayrValidator {
     _rules.add(() {
       if (value == null) return null;
       if (value is! List) {
-        return message ?? _core.getMessage('distinct') ?? 'All array elements must be unique';
+        return message ??
+            _core.getMessage('distinct') ??
+            'All array elements must be unique';
       }
-      
+
       if (value.length != value.toSet().length) {
-        return message ?? _core.getMessage('distinct') ?? 'All array elements must be unique';
+        return message ??
+            _core.getMessage('distinct') ??
+            'All array elements must be unique';
       }
       return null;
     });
@@ -982,16 +1088,16 @@ class MayrValidator {
   MayrValidator date([String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       if (value is DateTime) return null;
-      
+
       if (value is String) {
         if (DateTime.tryParse(value) == null) {
           return message ?? _core.getMessage('date') ?? 'Must be a valid date';
         }
         return null;
       }
-      
+
       return message ?? _core.getMessage('date') ?? 'Must be a valid date';
     });
     return this;
@@ -1001,20 +1107,22 @@ class MayrValidator {
   MayrValidator after(DateTime comparisonDate, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       DateTime? dateValue;
       if (value is DateTime) {
         dateValue = value;
       } else if (value is String) {
         dateValue = DateTime.tryParse(value);
       }
-      
+
       if (dateValue == null) {
         return message ?? _core.getMessage('after') ?? 'Must be a valid date';
       }
-      
+
       if (!dateValue.isAfter(comparisonDate)) {
-        return message ?? _core.getMessage('after') ?? 'Must be after the given date';
+        return message ??
+            _core.getMessage('after') ??
+            'Must be after the given date';
       }
       return null;
     });
@@ -1025,20 +1133,24 @@ class MayrValidator {
   MayrValidator afterOrEqual(DateTime comparisonDate, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       DateTime? dateValue;
       if (value is DateTime) {
         dateValue = value;
       } else if (value is String) {
         dateValue = DateTime.tryParse(value);
       }
-      
+
       if (dateValue == null) {
-        return message ?? _core.getMessage('afterOrEqual') ?? 'Must be a valid date';
+        return message ??
+            _core.getMessage('afterOrEqual') ??
+            'Must be a valid date';
       }
-      
+
       if (dateValue.isBefore(comparisonDate)) {
-        return message ?? _core.getMessage('afterOrEqual') ?? 'Must be after or equal to the given date';
+        return message ??
+            _core.getMessage('afterOrEqual') ??
+            'Must be after or equal to the given date';
       }
       return null;
     });
@@ -1049,20 +1161,22 @@ class MayrValidator {
   MayrValidator before(DateTime comparisonDate, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       DateTime? dateValue;
       if (value is DateTime) {
         dateValue = value;
       } else if (value is String) {
         dateValue = DateTime.tryParse(value);
       }
-      
+
       if (dateValue == null) {
         return message ?? _core.getMessage('before') ?? 'Must be a valid date';
       }
-      
+
       if (!dateValue.isBefore(comparisonDate)) {
-        return message ?? _core.getMessage('before') ?? 'Must be before the given date';
+        return message ??
+            _core.getMessage('before') ??
+            'Must be before the given date';
       }
       return null;
     });
@@ -1073,20 +1187,24 @@ class MayrValidator {
   MayrValidator beforeOrEqual(DateTime comparisonDate, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       DateTime? dateValue;
       if (value is DateTime) {
         dateValue = value;
       } else if (value is String) {
         dateValue = DateTime.tryParse(value);
       }
-      
+
       if (dateValue == null) {
-        return message ?? _core.getMessage('beforeOrEqual') ?? 'Must be a valid date';
+        return message ??
+            _core.getMessage('beforeOrEqual') ??
+            'Must be a valid date';
       }
-      
+
       if (dateValue.isAfter(comparisonDate)) {
-        return message ?? _core.getMessage('beforeOrEqual') ?? 'Must be before or equal to the given date';
+        return message ??
+            _core.getMessage('beforeOrEqual') ??
+            'Must be before or equal to the given date';
       }
       return null;
     });
@@ -1097,22 +1215,26 @@ class MayrValidator {
   MayrValidator dateEquals(DateTime comparisonDate, [String? message]) {
     _rules.add(() {
       if (value == null) return null;
-      
+
       DateTime? dateValue;
       if (value is DateTime) {
         dateValue = value;
       } else if (value is String) {
         dateValue = DateTime.tryParse(value);
       }
-      
+
       if (dateValue == null) {
-        return message ?? _core.getMessage('dateEquals') ?? 'Must be a valid date';
+        return message ??
+            _core.getMessage('dateEquals') ??
+            'Must be a valid date';
       }
-      
+
       if (dateValue.year != comparisonDate.year ||
           dateValue.month != comparisonDate.month ||
           dateValue.day != comparisonDate.day) {
-        return message ?? _core.getMessage('dateEquals') ?? 'Must be equal to the given date';
+        return message ??
+            _core.getMessage('dateEquals') ??
+            'Must be equal to the given date';
       }
       return null;
     });
@@ -1127,14 +1249,14 @@ class MayrValidator {
   MayrValidator custom(String name, [Map<String, dynamic>? params]) {
     _rules.add(() {
       final rule = _core.getCustomRule(name);
-      
+
       if (rule == null) {
         if (_core.isDevelopmentMode) {
           throw Exception('Custom rule "$name" is not registered');
         }
         return null;
       }
-      
+
       return rule(value, params) as String?;
     });
     return this;
@@ -1143,14 +1265,14 @@ class MayrValidator {
   /// Run a registered validation group.
   MayrValidator group(String name, [Map<String, dynamic>? params]) {
     final groupFunc = _core.getGroup(name);
-    
+
     if (groupFunc == null) {
       if (_core.isDevelopmentMode) {
         throw Exception('Validation group "$name" is not registered');
       }
       return this;
     }
-    
+
     return groupFunc(this, params) as MayrValidator;
   }
 }
