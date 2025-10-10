@@ -1,15 +1,26 @@
-name: mayr_dart_validator
-description: A starting point for Dart libraries or applications.
+name: mayr_validator
+description: A powerful yet elegant validation library for Dart and Flutter, inspired by Laravel’s validator syntax and philosophy.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+homepage: https://github.com/YoungMayor/mayr_dart_validator
+repository: https://github.com/YoungMayor/mayr_dart_validator
+issue_tracker: https://github.com/YoungMayor/mayr_dart_validator/issues
+documentation: https://github.com/YoungMayor/mayr_dart_validator/wiki
+LICENSE: MIT
 
 environment:
   sdk: ^3.9.2
 
 # Add regular dependencies here.
-dependencies:
+# dependencies:
   # path: ^1.9.0
 
 dev_dependencies:
   lints: ^6.0.0
   test: ^1.25.6
+
+topics:
+  - validation
+  - validators
+  - dart
+  - productivity
+  - forms
