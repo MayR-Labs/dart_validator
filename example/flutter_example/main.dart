@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mayr_validator/mayr_validator.dart';
+import 'setup_validations.dart';
 
 /// Flutter Example for MayrValidator
 /// 
@@ -13,6 +14,9 @@ import 'package:mayr_validator/mayr_validator.dart';
 /// 4. Run the app
 
 void main() {
+  // Setup global validation configuration before running the app
+  setupValidations();
+  
   runApp(MyApp());
 }
 
@@ -49,39 +53,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   void initState() {
     super.initState();
-    
-    // Setup global validation configuration
-    MayrValidationCore().setup({
-      'messages': {
-        'required': 'This field is required',
-        'min': 'Must be at least {min} characters',
-        'max': 'Must not exceed {max} characters',
-        'email': 'Please enter a valid email address',
-        'numeric': 'Must be a number',
-        'between': 'Must be between {min} and {max}',
-      },
-      'defaults': {
-        'min': 3,
-        'max': 255,
-      },
-    });
-
-    // Register custom validation groups
-    MayrValidationCore().registerGroup('username', (validator, params) {
-      return validator
-          .required()
-          .min(3)
-          .max(20)
-          .alphaDash();
-    });
-
-    MayrValidationCore().registerGroup('strongPassword', (validator, params) {
-      return validator
-          .required()
-          .min(8)
-          .regex(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])')
-          .notRegex(r'\s');
-    });
+    // Validation configuration is set up in main() via setupValidations()
   }
 
   @override

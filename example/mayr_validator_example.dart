@@ -1,6 +1,10 @@
 import 'package:mayr_validator/mayr_validator.dart';
+import 'setup_validations.dart';
 
 void main() {
+  // Setup global validation configuration
+  setupValidations();
+
   print('=== MayrValidator Examples ===\n');
 
   // Example 1: Basic validation
@@ -57,68 +61,33 @@ void basicValidation() {
 
 /// Example 2: Global configuration
 void globalConfiguration() {
-  // Setup global configuration
-  MayrValidationCore().setup({
-    'messages': {
-      'required': 'This field cannot be empty',
-      'min': 'Minimum length is {min} characters',
-      'email': 'Please enter a valid email address',
-    },
-    'defaults': {
-      'min': 3,
-      'max': 255,
-    },
-  });
-
+  // The global configuration is already set up in main() via setupValidations()
+  // This example shows how the configured messages are used
+  
   final error = MayrValidator('').required().run();
   print('Custom message: $error');
 
   final error2 = MayrValidator('ab').min(5).run();
   print('Custom min message: $error2');
-
-  // Reset for other examples
-  MayrValidationCore().reset();
 }
 
 /// Example 3: Custom rules
 void customRules() {
-  // Register a custom rule
-  MayrValidationCore().registerRule('userId', (String? value, Map<String, dynamic>? params) {
-    if (value == null || value.isEmpty) return 'User ID is required';
-    if (!value.startsWith('USR_')) return 'User ID must start with USR_';
-    if (!RegExp(r'^USR_[A-Z0-9]+$').hasMatch(value)) {
-      return 'Invalid user ID format';
-    }
-    return null;
-  });
-
-  // Use the custom rule
+  // Custom rules are already registered in main() via setupValidations()
+  // This example shows how to use the registered custom rule
+  
   final error1 = MayrValidator('USR_12345').custom('userId').run();
   print('Valid user ID: ${error1 ?? "Valid"}');
 
   final error2 = MayrValidator('INVALID').custom('userId').run();
   print('Invalid user ID: $error2');
-
-  // Reset for other examples
-  MayrValidationCore().reset();
 }
 
 /// Example 4: Validation groups
 void validationGroups() {
-  // Register a validation group for username
-  MayrValidationCore().registerGroup('username', (validator, params) {
-    return validator.required().min(3).max(20).alphaDash();
-  });
-
-  // Register a validation group for password
-  MayrValidationCore().registerGroup('strongPassword', (validator, params) {
-    return validator
-        .required()
-        .min(8)
-        .regex(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])');
-  });
-
-  // Use validation groups
+  // Validation groups are already registered in main() via setupValidations()
+  // This example shows how to use the registered validation groups
+  
   final error1 = MayrValidator('john_doe').group('username').run();
   print('Valid username: ${error1 ?? "Valid"}');
 
@@ -130,9 +99,6 @@ void validationGroups() {
 
   final error4 = MayrValidator('weak').group('strongPassword').run();
   print('Invalid password: $error4');
-
-  // Reset for other examples
-  MayrValidationCore().reset();
 }
 
 /// Example 5: Chaining validators
