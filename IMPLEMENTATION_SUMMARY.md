@@ -310,7 +310,7 @@ MayrValidationCore().registerGroup('username', (validator, params) {
 
 2. **Import and use**
    ```dart
-   import 'package:mayr_validator/mayr_validator.dart';
+   import 'package:dart_validator/mayr_validator.dart';
    ```
 
 3. **Setup global configuration** (optional)

@@ -53,7 +53,7 @@ dependencies:
 ### 🧠 Basic Usage in Dart
 
 ```dart
-import 'package:mayr_validator/mayr_validator.dart';
+import 'package:dart_validator/mayr_validator.dart';
 
 void main() {
   // Basic validation
@@ -70,7 +70,7 @@ void main() {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:mayr_validator/mayr_validator.dart';
+import 'package:dart_validator/mayr_validator.dart';
 
 TextFormField(
   decoration: InputDecoration(labelText: 'Email'),
