@@ -36,7 +36,7 @@ Complete Flutter application examples demonstrating:
 ### Basic Validation
 
 ```dart
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
 void main() {
   // Simple validation

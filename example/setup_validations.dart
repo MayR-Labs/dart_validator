@@ -1,4 +1,4 @@
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
 /// Setup global validation configuration and register custom rules/groups.
 ///

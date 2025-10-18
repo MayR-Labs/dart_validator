@@ -23,7 +23,7 @@ Since this is a Flutter-specific example, you'll need to:
    dependencies:
      flutter:
        sdk: flutter
-     dart_validator: ^1.0.0
+     mayr_validator: ^1.0.0
    ```
 
 3. **Copy the example:**

@@ -1,11 +1,11 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?label=Licence)
 ![Platform](https://img.shields.io/badge/Platform-Flutter-blue.svg)
 
-![Pub Version](https://img.shields.io/pub/v/dart_validator?style=plastic&label=Version)
-![Pub.dev Score](https://img.shields.io/pub/points/dart_validator?label=Score&style=plastic)
-![Pub Likes](https://img.shields.io/pub/likes/dart_validator?label=Likes&style=plastic)
-![Pub.dev Publisher](https://img.shields.io/pub/publisher/dart_validator?label=Publisher&style=plastic)
-![Downloads](https://img.shields.io/pub/dm/dart_validator.svg?label=Downloads&style=plastic)
+![Pub Version](https://img.shields.io/pub/v/mayr_validator?style=plastic&label=Version)
+![Pub.dev Score](https://img.shields.io/pub/points/mayr_validator?label=Score&style=plastic)
+![Pub Likes](https://img.shields.io/pub/likes/mayr_validator?label=Likes&style=plastic)
+![Pub.dev Publisher](https://img.shields.io/pub/publisher/mayr_validator?label=Publisher&style=plastic)
+![Downloads](https://img.shields.io/pub/dm/mayr_validator.svg?label=Downloads&style=plastic)
 
 ![Build Status](https://img.shields.io/github/actions/workflow/status/MayR-Labs/dart_validator/ci.yaml?label=Build)
 ![Issues](https://img.shields.io/github/issues/MayR-Labs/dart_validator.svg?label=Issues)
@@ -36,14 +36,14 @@ It provides a fluent API to build validations that are **expressive**, **chainab
 Add to your project:
 
 ```bash
-dart pub add dart_validator
+dart pub add mayr_validator
 ```
 
 Or in `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  dart_validator: ^1.0.0
+  mayr_validator: ^1.0.0
 ```
 
 ---
@@ -53,7 +53,7 @@ dependencies:
 ### 🧠 Basic Usage in Dart
 
 ```dart
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
 void main() {
   // Basic validation
@@ -70,7 +70,7 @@ void main() {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
 TextFormField(
   decoration: InputDecoration(labelText: 'Email'),

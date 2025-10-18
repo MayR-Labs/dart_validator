@@ -594,7 +594,7 @@ final error = nullString.mayrValidator().required().run();
 ## Complete Example
 
 ```dart
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 
 void main() {
   // Setup global configuration

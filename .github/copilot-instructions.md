@@ -1,13 +1,13 @@
 # GitHub Copilot Instructions for dart_validator
 
 ## Project Overview
-This is a Flutter/Dart validation package called **dart_validator** (formerly mayr_validator), providing a fluent API for building validations inspired by Laravel's validator syntax.
+This is a Flutter/Dart validation package called **mayr_validator**, providing a fluent API for building validations inspired by Laravel's validator syntax.
 
 ## Package Information
 - **Organization**: MayR Labs (https://github.com/MayR-Labs)
 - **Website**: https://mayrlabs.com
 - **Repository**: https://github.com/MayR-Labs/dart_validator
-- **Package Name**: dart_validator
+- **Package Name**: mayr_validator
 - **License**: MIT License, Copyright (c) 2025 MayR Labs
 
 ## Development Guidelines

@@ -1,4 +1,4 @@
-import 'package:dart_validator/mayr_validator.dart';
+import 'package:mayr_validator/mayr_validator.dart';
 import 'setup_validations.dart';
 
 void main() {
@@ -146,7 +146,7 @@ void extensionMethod() {
 ///
 /// ```dart
 /// import 'package:flutter/material.dart';
-/// import 'package:dart_validator/mayr_validator.dart';
+/// import 'package:mayr_validator/mayr_validator.dart';
 ///
 /// class MyForm extends StatefulWidget {
 ///   @override
