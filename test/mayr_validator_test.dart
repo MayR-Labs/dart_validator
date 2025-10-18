@@ -1,4 +1,4 @@
-import 'package:mayr_validator/mayr_validator.dart';
+import 'package:dart_validator/mayr_validator.dart';
 import 'package:test/test.dart';
 
 void main() {

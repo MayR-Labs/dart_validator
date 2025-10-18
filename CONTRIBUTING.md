@@ -8,7 +8,7 @@ Thank you for your interest in contributing to MayrValidations! We welcome contr
 
 If you find a bug or have a feature request:
 
-1. Check if the issue already exists in [GitHub Issues](https://github.com/YoungMayor/mayr_dart_validator/issues)
+1. Check if the issue already exists in [GitHub Issues](https://github.com/MayR-Labs/dart_validator/issues)
 2. If not, create a new issue with:
    - Clear title and description
    - Steps to reproduce (for bugs)
@@ -22,8 +22,8 @@ We love pull requests! Here's how to contribute code:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/mayr_dart_validator.git
-   cd mayr_dart_validator
+   git clone https://github.com/YOUR_USERNAME/dart_validator.git
+   cd dart_validator
    ```
 
 2. **Create a feature branch**
@@ -101,7 +101,7 @@ group('Feature Name', () {
 ## 🏗️ Project Structure
 
 ```
-mayr_dart_validator/
+dart_validator/
 ├── lib/
 │   ├── src/
 │   │   ├── core/              # Core singleton and configuration
@@ -183,9 +183,9 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 If you have questions:
 
-- Open a [GitHub Discussion](https://github.com/YoungMayor/mayr_dart_validator/discussions)
-- Check existing [Issues](https://github.com/YoungMayor/mayr_dart_validator/issues)
-- Read the [Documentation](https://github.com/YoungMayor/mayr_dart_validator)
+- Open a [GitHub Discussion](https://github.com/MayR-Labs/dart_validator/discussions)
+- Check existing [Issues](https://github.com/MayR-Labs/dart_validator/issues)
+- Read the [Documentation](https://github.com/MayR-Labs/dart_validator)
 
 ## 👥 Code of Conduct
 

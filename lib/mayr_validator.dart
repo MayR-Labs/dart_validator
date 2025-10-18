@@ -5,7 +5,7 @@
 ///
 /// Example:
 /// ```dart
-/// import 'package:mayr_validator/mayr_validator.dart';
+/// import 'package:dart_validator/mayr_validator.dart';
 ///
 /// // Basic usage
 /// final error = MayrValidator('test@example.com')

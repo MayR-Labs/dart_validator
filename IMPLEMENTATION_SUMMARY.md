@@ -290,10 +290,10 @@ MayrValidationCore().registerGroup('username', (validator, params) {
 
 ## 📦 Package Metadata
 
-- **Name**: mayr_validator
+- **Name**: dart_validator
 - **Version**: 1.0.0
 - **Description**: A powerful yet elegant validation library for Dart and Flutter
-- **Author**: Meyoron Aghogho (MayR Labs)
+- **Organization**: MayR Labs (https://github.com/MayR-Labs)
 - **License**: MIT
 - **SDK**: Dart ^3.9.2
 - **Dependencies**: None (pure Dart)
@@ -305,7 +305,7 @@ MayrValidationCore().registerGroup('username', (validator, params) {
 
 1. **Install the package**
    ```bash
-   dart pub add mayr_validator
+   dart pub add dart_validator
    ```
 
 2. **Import and use**
