@@ -293,7 +293,7 @@ MayrValidationCore().registerGroup('username', (validator, params) {
 - **Name**: mayr_validator
 - **Version**: 1.0.0
 - **Description**: A powerful yet elegant validation library for Dart and Flutter
-- **Author**: Meyoron Aghogho (MayR Labs)
+- **Organization**: MayR Labs (https://github.com/MayR-Labs)
 - **License**: MIT
 - **SDK**: Dart ^3.9.2
 - **Dependencies**: None (pure Dart)
