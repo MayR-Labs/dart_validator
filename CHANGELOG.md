@@ -37,5 +37,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ⚡ **Debounce Support** - Control when validations run
 - 🧍‍♂️ **Standalone or Flutter-ready** - Works in pure Dart and Flutter
 
-[1.0.0]: https://github.com/YoungMayor/mayr_dart_validator/releases/tag/v1.0.0
+[1.0.0]: https://github.com/MayR-Labs/dart_validator/releases/tag/v1.0.0
 
